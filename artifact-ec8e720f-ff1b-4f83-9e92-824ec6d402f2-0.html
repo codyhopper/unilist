@@ -1,0 +1,1168 @@
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+								
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Unicode Copy Shelf</title>
+
+  <style>
+    :root {
+      color-scheme: light;
+      --background: #f5f6fb;
+      --surface: #ffffff;
+      --text: #202438;
+      --muted: #5d6378;
+      --border: #d9ddeb;
+      --accent: #5938c8;
+      --accent-hover: #4425ab;
+      --soft: #eee9ff;
+      --success: #14613e;
+      --error: #a52438;
+      --focus: #096bd8;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2rem, 5vw, 3rem);
+      letter-spacing: -0.04em;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    .intro {
+      max-width: 76ch;
+      color: var(--muted);
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 16px;
+      padding: 20px;
+      margin-top: 26px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 650;
+    }
+
+    input,
+    select,
+    button {
+      font: inherit;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-width: 0;
+      min-height: 46px;
+      padding: 10px 12px;
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    button {
+      min-height: 44px;
+      padding: 9px 16px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: #ffffff;
+      background: var(--accent);
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    button:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    button.secondary {
+      color: var(--accent);
+      background: var(--soft);
+      border-color: var(--border);
+    }
+
+    button.secondary:hover:not(:disabled) {
+      color: #ffffff;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 4px;
+    }
+
+    .help,
+    .notes {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .help {
+      margin-top: 10px;
+    }
+
+    .feedback {
+      min-height: 1.7em;
+      margin: 14px 0;
+      color: var(--success);
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .feedback[data-state="error"] {
+      color: var(--error);
+    }
+
+    .results-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px 20px;
+      margin: 24px 0 14px;
+    }
+
+    .result-count {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(205px, 1fr));
+      gap: 14px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .card {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .glyph {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 88px;
+      margin-bottom: 4px;
+      overflow: hidden;
+      white-space: pre;
+      unicode-bidi: isolate;
+      direction: ltr;
+      font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+        "Segoe UI Symbol", system-ui, sans-serif;
+      font-size: 3rem;
+      line-height: 1.2;
+    }
+
+    .glyph.placeholder {
+      white-space: normal;
+      text-align: center;
+      font: 600 0.85rem/1.4 system-ui, sans-serif;
+      color: var(--muted);
+      background: var(--background);
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      padding: 8px;
+    }
+
+    .code-point {
+      color: var(--accent);
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .character-name {
+      font-size: 0.8rem;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+
+    .block-name {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .copy-button {
+      width: 100%;
+      margin-top: auto;
+    }
+
+    .copy-button[data-state="success"] {
+      background: var(--success);
+    }
+
+    .copy-button[data-state="error"] {
+      background: var(--error);
+    }
+
+    .empty {
+      padding: 32px 20px;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .load-area {
+      text-align: center;
+      margin: 24px 0;
+    }
+
+    .notes {
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+    }
+
+    .notes p:last-child {
+      margin-bottom: 0;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 680px) {
+      main {
+        padding: 24px 14px;
+      }
+
+      .controls {
+        grid-template-columns: 1fr;
+        padding: 16px;
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .card {
+        padding: 12px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --background: #141522;
+        --surface: #1e2031;
+        --text: #f0f0f8;
+        --muted: #b5b8cc;
+        --border: #3b3e56;
+        --accent: #ad99ff;
+        --accent-hover: #8060e6;
+        --soft: #32284f;
+        --success: #81dfac;
+        --error: #ff9cac;
+        --focus: #80beff;
+      }
+
+      button {
+        background: #6848ce;
+      }
+
+      .copy-button[data-state="success"] {
+        color: #102b1d;
+      }
+
+      .copy-button[data-state="error"] {
+        color: #39131b;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      button {
+        transition: background-color 120ms ease;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <header>
+      <h1>Unicode Copy Shelf</h1>
+      <p class="intro">
+        Browse useful Unicode characters, find a symbol, and copy it with one
+        click. Everything is generated locally—no downloads or network requests.
+      </p>
+    </header>
+
+    <section aria-label="Search and filter characters">
+      <div class="controls">
+        <div>
+          <label for="search">Search characters</label>
+          <input
+            id="search"
+            type="search"
+            placeholder="Try ©, 1F600, U+00A9, or Arrows"
+            aria-describedby="search-help"
+            aria-controls="character-list"
+            autocomplete="off"
+            spellcheck="false"
+          >
+        </div>
+
+        <div>
+          <label for="block-filter">Unicode block</label>
+          <select id="block-filter" aria-controls="character-list">
+            <option value="">All blocks</option>
+          </select>
+        </div>
+
+        <button id="reset" type="button" class="secondary">
+          Reset filters
+        </button>
+      </div>
+
+      <p id="search-help" class="help">
+        Search by character, hexadecimal code point, block, or a bundled name.
+        Code point searches match exactly. A single space finds U+0020.
+      </p>
+    </section>
+
+    <p
+      id="copy-feedback"
+      class="feedback"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    ></p>
+
+    <section aria-labelledby="results-title">
+      <div class="results-header">
+        <h2 id="results-title">Characters</h2>
+        <p
+          id="result-count"
+          class="result-count"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        ></p>
+      </div>
+
+      <ul id="character-list" class="cards" aria-label="Unicode characters"></ul>
+
+      <p id="empty-message" class="empty" hidden>
+        No characters match. Try another search or choose a different block.
+      </p>
+
+      <div class="load-area">
+        <button
+          id="load-more"
+          type="button"
+          aria-controls="character-list"
+        >
+          Load more
+        </button>
+      </div>
+    </section>
+
+    <footer class="notes">
+      <p>
+        <strong>Fonts matter:</strong> some glyphs depend on your installed fonts
+        and operating system. An empty box may mean that your font does not
+        support the character. Emoji appearance varies between platforms.
+      </p>
+      <p>
+        <strong>Names and coverage:</strong> this app includes a small, bundled
+        table of official Unicode names, not the complete Unicode database.
+        “Unnamed code point” means no name is bundled; it does not necessarily
+        mean the code point is unassigned. Some block positions may be unassigned.
+      </p>
+      <p>
+        C0/C1 controls, surrogates, and Unicode noncharacters are omitted.
+        Whitespace and known invisible formatting characters have descriptive
+        previews; Copy still copies the actual character.
+      </p>
+      <p>
+        Clipboard permissions vary by browser. If both copy methods are blocked,
+        the app reports a failure instead of claiming success.
+      </p>
+    </footer>
+
+    <noscript>
+      <p>This app requires JavaScript to generate and copy Unicode characters.</p>
+    </noscript>
+  </main>
+
+  <script>
+    "use strict";
+
+    // Add further blocks here. Each range uses inclusive endpoints.
+    const UNICODE_BLOCKS = [
+      { name: "Basic Latin", start: 0x0000, end: 0x007F },
+      { name: "Latin-1 Supplement", start: 0x0080, end: 0x00FF },
+      { name: "General Punctuation", start: 0x2000, end: 0x206F },
+      { name: "Currency Symbols", start: 0x20A0, end: 0x20CF },
+      { name: "Arrows", start: 0x2190, end: 0x21FF },
+      { name: "Mathematical Operators", start: 0x2200, end: 0x22FF },
+      { name: "Geometric Shapes", start: 0x25A0, end: 0x25FF },
+      { name: "Dingbats", start: 0x2700, end: 0x27BF },
+      { name: "Miscellaneous Symbols", start: 0x2600, end: 0x26FF },
+      { name: "Emoticons", start: 0x1F600, end: 0x1F64F },
+      { name: "Transport and Map Symbols", start: 0x1F680, end: 0x1F6FF }
+    ];
+
+    // Deliberately limited official-name data. Never infer an official name
+    // from a visual glyph or block membership.
+    const OFFICIAL_NAMES = new Map([
+      [0x0020, "SPACE"],
+      [0x0021, "EXCLAMATION MARK"],
+      [0x0022, "QUOTATION MARK"],
+      [0x0023, "NUMBER SIGN"],
+      [0x0024, "DOLLAR SIGN"],
+      [0x0025, "PERCENT SIGN"],
+      [0x0026, "AMPERSAND"],
+      [0x0027, "APOSTROPHE"],
+      [0x0028, "LEFT PARENTHESIS"],
+      [0x0029, "RIGHT PARENTHESIS"],
+      [0x002A, "ASTERISK"],
+      [0x002B, "PLUS SIGN"],
+      [0x002C, "COMMA"],
+      [0x002D, "HYPHEN-MINUS"],
+      [0x002E, "FULL STOP"],
+      [0x002F, "SOLIDUS"],
+      [0x003A, "COLON"],
+      [0x003B, "SEMICOLON"],
+      [0x003C, "LESS-THAN SIGN"],
+      [0x003D, "EQUALS SIGN"],
+      [0x003E, "GREATER-THAN SIGN"],
+      [0x003F, "QUESTION MARK"],
+      [0x0040, "COMMERCIAL AT"],
+      [0x005B, "LEFT SQUARE BRACKET"],
+      [0x005C, "REVERSE SOLIDUS"],
+      [0x005D, "RIGHT SQUARE BRACKET"],
+      [0x005E, "CIRCUMFLEX ACCENT"],
+      [0x005F, "LOW LINE"],
+      [0x0060, "GRAVE ACCENT"],
+      [0x007B, "LEFT CURLY BRACKET"],
+      [0x007C, "VERTICAL LINE"],
+      [0x007D, "RIGHT CURLY BRACKET"],
+      [0x007E, "TILDE"],
+      [0x00A0, "NO-BREAK SPACE"],
+      [0x00A1, "INVERTED EXCLAMATION MARK"],
+      [0x00A2, "CENT SIGN"],
+      [0x00A3, "POUND SIGN"],
+      [0x00A4, "CURRENCY SIGN"],
+      [0x00A5, "YEN SIGN"],
+      [0x00A6, "BROKEN BAR"],
+      [0x00A7, "SECTION SIGN"],
+      [0x00A8, "DIAERESIS"],
+      [0x00A9, "COPYRIGHT SIGN"],
+      [0x00AA, "FEMININE ORDINAL INDICATOR"],
+      [0x00AB, "LEFT-POINTING DOUBLE ANGLE QUOTATION MARK"],
+      [0x00AC, "NOT SIGN"],
+      [0x00AD, "SOFT HYPHEN"],
+      [0x00AE, "REGISTERED SIGN"],
+      [0x00AF, "MACRON"],
+      [0x00B0, "DEGREE SIGN"],
+      [0x00B1, "PLUS-MINUS SIGN"],
+      [0x00B2, "SUPERSCRIPT TWO"],
+      [0x00B3, "SUPERSCRIPT THREE"],
+      [0x00B4, "ACUTE ACCENT"],
+      [0x00B5, "MICRO SIGN"],
+      [0x00B6, "PILCROW SIGN"],
+      [0x00B7, "MIDDLE DOT"],
+      [0x00B8, "CEDILLA"],
+      [0x00B9, "SUPERSCRIPT ONE"],
+      [0x00BA, "MASCULINE ORDINAL INDICATOR"],
+      [0x00BB, "RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK"],
+      [0x00BC, "VULGAR FRACTION ONE QUARTER"],
+      [0x00BD, "VULGAR FRACTION ONE HALF"],
+      [0x00BE, "VULGAR FRACTION THREE QUARTERS"],
+      [0x00BF, "INVERTED QUESTION MARK"],
+      [0x00D7, "MULTIPLICATION SIGN"],
+      [0x00F7, "DIVISION SIGN"],
+      [0x2000, "EN QUAD"],
+      [0x2001, "EM QUAD"],
+      [0x2002, "EN SPACE"],
+      [0x2003, "EM SPACE"],
+      [0x2004, "THREE-PER-EM SPACE"],
+      [0x2005, "FOUR-PER-EM SPACE"],
+      [0x2006, "SIX-PER-EM SPACE"],
+      [0x2007, "FIGURE SPACE"],
+      [0x2008, "PUNCTUATION SPACE"],
+      [0x2009, "THIN SPACE"],
+      [0x200A, "HAIR SPACE"],
+      [0x200B, "ZERO WIDTH SPACE"],
+      [0x200C, "ZERO WIDTH NON-JOINER"],
+      [0x200D, "ZERO WIDTH JOINER"],
+      [0x200E, "LEFT-TO-RIGHT MARK"],
+      [0x200F, "RIGHT-TO-LEFT MARK"],
+      [0x2010, "HYPHEN"],
+      [0x2011, "NON-BREAKING HYPHEN"],
+      [0x2012, "FIGURE DASH"],
+      [0x2013, "EN DASH"],
+      [0x2014, "EM DASH"],
+      [0x2015, "HORIZONTAL BAR"],
+      [0x2018, "LEFT SINGLE QUOTATION MARK"],
+      [0x2019, "RIGHT SINGLE QUOTATION MARK"],
+      [0x201C, "LEFT DOUBLE QUOTATION MARK"],
+      [0x201D, "RIGHT DOUBLE QUOTATION MARK"],
+      [0x2020, "DAGGER"],
+      [0x2021, "DOUBLE DAGGER"],
+      [0x2022, "BULLET"],
+      [0x2026, "HORIZONTAL ELLIPSIS"],
+      [0x2028, "LINE SEPARATOR"],
+      [0x2029, "PARAGRAPH SEPARATOR"],
+      [0x202A, "LEFT-TO-RIGHT EMBEDDING"],
+      [0x202B, "RIGHT-TO-LEFT EMBEDDING"],
+      [0x202C, "POP DIRECTIONAL FORMATTING"],
+      [0x202D, "LEFT-TO-RIGHT OVERRIDE"],
+      [0x202E, "RIGHT-TO-LEFT OVERRIDE"],
+      [0x202F, "NARROW NO-BREAK SPACE"],
+      [0x2030, "PER MILLE SIGN"],
+      [0x2032, "PRIME"],
+      [0x2033, "DOUBLE PRIME"],
+      [0x2039, "SINGLE LEFT-POINTING ANGLE QUOTATION MARK"],
+      [0x203A, "SINGLE RIGHT-POINTING ANGLE QUOTATION MARK"],
+      [0x2044, "FRACTION SLASH"],
+      [0x205F, "MEDIUM MATHEMATICAL SPACE"],
+      [0x2060, "WORD JOINER"],
+      [0x2061, "FUNCTION APPLICATION"],
+      [0x2062, "INVISIBLE TIMES"],
+      [0x2063, "INVISIBLE SEPARATOR"],
+      [0x2064, "INVISIBLE PLUS"],
+      [0x2066, "LEFT-TO-RIGHT ISOLATE"],
+      [0x2067, "RIGHT-TO-LEFT ISOLATE"],
+      [0x2068, "FIRST STRONG ISOLATE"],
+      [0x2069, "POP DIRECTIONAL ISOLATE"],
+      [0x20A9, "WON SIGN"],
+      [0x20AC, "EURO SIGN"],
+      [0x20B9, "INDIAN RUPEE SIGN"],
+      [0x20BD, "RUBLE SIGN"],
+      [0x20BF, "BITCOIN SIGN"],
+      [0x2190, "LEFTWARDS ARROW"],
+      [0x2191, "UPWARDS ARROW"],
+      [0x2192, "RIGHTWARDS ARROW"],
+      [0x2193, "DOWNWARDS ARROW"],
+      [0x2194, "LEFT RIGHT ARROW"],
+      [0x2195, "UP DOWN ARROW"],
+      [0x21D0, "LEFTWARDS DOUBLE ARROW"],
+      [0x21D2, "RIGHTWARDS DOUBLE ARROW"],
+      [0x21D4, "LEFT RIGHT DOUBLE ARROW"],
+      [0x2200, "FOR ALL"],
+      [0x2202, "PARTIAL DIFFERENTIAL"],
+      [0x2203, "THERE EXISTS"],
+      [0x2205, "EMPTY SET"],
+      [0x2207, "NABLA"],
+      [0x2208, "ELEMENT OF"],
+      [0x2209, "NOT AN ELEMENT OF"],
+      [0x220F, "N-ARY PRODUCT"],
+      [0x2211, "N-ARY SUMMATION"],
+      [0x2212, "MINUS SIGN"],
+      [0x221A, "SQUARE ROOT"],
+      [0x221E, "INFINITY"],
+      [0x2227, "LOGICAL AND"],
+      [0x2228, "LOGICAL OR"],
+      [0x2229, "INTERSECTION"],
+      [0x222A, "UNION"],
+      [0x222B, "INTEGRAL"],
+      [0x2248, "ALMOST EQUAL TO"],
+      [0x2260, "NOT EQUAL TO"],
+      [0x2264, "LESS-THAN OR EQUAL TO"],
+      [0x2265, "GREATER-THAN OR EQUAL TO"],
+      [0x25A0, "BLACK SQUARE"],
+      [0x25A1, "WHITE SQUARE"],
+      [0x25B2, "BLACK UP-POINTING TRIANGLE"],
+      [0x25B6, "BLACK RIGHT-POINTING TRIANGLE"],
+      [0x25BC, "BLACK DOWN-POINTING TRIANGLE"],
+      [0x25C0, "BLACK LEFT-POINTING TRIANGLE"],
+      [0x25C6, "BLACK DIAMOND"],
+      [0x25CB, "WHITE CIRCLE"],
+      [0x25CF, "BLACK CIRCLE"],
+      [0x2600, "BLACK SUN WITH RAYS"],
+      [0x2601, "CLOUD"],
+      [0x2602, "UMBRELLA"],
+      [0x2603, "SNOWMAN"],
+      [0x2605, "BLACK STAR"],
+      [0x2606, "WHITE STAR"],
+      [0x260E, "BLACK TELEPHONE"],
+      [0x2611, "BALLOT BOX WITH CHECK"],
+      [0x2615, "HOT BEVERAGE"],
+      [0x263A, "WHITE SMILING FACE"],
+      [0x2640, "FEMALE SIGN"],
+      [0x2642, "MALE SIGN"],
+      [0x2660, "BLACK SPADE SUIT"],
+      [0x2663, "BLACK CLUB SUIT"],
+      [0x2665, "BLACK HEART SUIT"],
+      [0x2666, "BLACK DIAMOND SUIT"],
+      [0x266A, "EIGHTH NOTE"],
+      [0x266B, "BEAMED EIGHTH NOTES"],
+      [0x267B, "BLACK UNIVERSAL RECYCLING SYMBOL"],
+      [0x26A0, "WARNING SIGN"],
+      [0x26A1, "HIGH VOLTAGE SIGN"],
+      [0x2702, "BLACK SCISSORS"],
+      [0x2705, "WHITE HEAVY CHECK MARK"],
+      [0x2708, "AIRPLANE"],
+      [0x2709, "ENVELOPE"],
+      [0x270C, "VICTORY HAND"],
+      [0x2713, "CHECK MARK"],
+      [0x2714, "HEAVY CHECK MARK"],
+      [0x2717, "BALLOT X"],
+      [0x2728, "SPARKLES"],
+      [0x2744, "SNOWFLAKE"],
+      [0x274C, "CROSS MARK"],
+      [0x2764, "HEAVY BLACK HEART"],
+      [0x1F600, "GRINNING FACE"],
+      [0x1F601, "GRINNING FACE WITH SMILING EYES"],
+      [0x1F602, "FACE WITH TEARS OF JOY"],
+      [0x1F603, "SMILING FACE WITH OPEN MOUTH"],
+      [0x1F604, "SMILING FACE WITH OPEN MOUTH AND SMILING EYES"],
+      [0x1F605, "SMILING FACE WITH OPEN MOUTH AND COLD SWEAT"],
+      [0x1F606, "SMILING FACE WITH OPEN MOUTH AND TIGHTLY-CLOSED EYES"],
+      [0x1F609, "WINKING FACE"],
+      [0x1F60A, "SMILING FACE WITH SMILING EYES"],
+      [0x1F60D, "SMILING FACE WITH HEART-SHAPED EYES"],
+      [0x1F60E, "SMILING FACE WITH SUNGLASSES"],
+      [0x1F610, "NEUTRAL FACE"],
+      [0x1F618, "FACE THROWING A KISS"],
+      [0x1F622, "CRYING FACE"],
+      [0x1F62D, "LOUDLY CRYING FACE"],
+      [0x1F642, "SLIGHTLY SMILING FACE"],
+      [0x1F643, "UPSIDE-DOWN FACE"],
+      [0x1F64F, "PERSON WITH FOLDED HANDS"],
+      [0x1F680, "ROCKET"],
+      [0x1F681, "HELICOPTER"],
+      [0x1F682, "STEAM LOCOMOTIVE"],
+      [0x1F686, "TRAIN"],
+      [0x1F68C, "BUS"],
+      [0x1F691, "AMBULANCE"],
+      [0x1F692, "FIRE ENGINE"],
+      [0x1F695, "TAXI"],
+      [0x1F697, "AUTOMOBILE"],
+      [0x1F6A2, "SHIP"],
+      [0x1F6A6, "VERTICAL TRAFFIC LIGHT"],
+      [0x1F6B2, "BICYCLE"],
+      [0x1F6B6, "PEDESTRIAN"],
+      [0x1F6F0, "SATELLITE"],
+      [0x1F6F4, "SCOOTER"],
+      [0x1F6F9, "SKATEBOARD"]
+    ]);
+
+    const DIGIT_NAMES = [
+      "ZERO", "ONE", "TWO", "THREE", "FOUR",
+      "FIVE", "SIX", "SEVEN", "EIGHT", "NINE"
+    ];
+
+    const PAGE_SIZE = 96;
+    const FALLBACK_NAME = "Unnamed code point";
+
+    const searchInput = document.getElementById("search");
+    const blockFilter = document.getElementById("block-filter");
+    const resetButton = document.getElementById("reset");
+    const list = document.getElementById("character-list");
+    const resultCount = document.getElementById("result-count");
+    const emptyMessage = document.getElementById("empty-message");
+    const loadMoreButton = document.getElementById("load-more");
+    const copyFeedback = document.getElementById("copy-feedback");
+
+    const numberFormatter = new Intl.NumberFormat();
+    const buttonTimers = new WeakMap();
+    let announcementTimer;
+
+    function formatCodePoint(codePoint) {
+      return "U+" + codePoint.toString(16).toUpperCase().padStart(4, "0");
+    }
+
+    function isIncludedCodePoint(codePoint) {
+      if (!Number.isInteger(codePoint) ||
+          codePoint < 0 ||
+          codePoint > 0x10FFFF) {
+        return false;
+      }
+
+      // Surrogates are not Unicode scalar values.
+      if (codePoint >= 0xD800 && codePoint <= 0xDFFF) return false;
+
+      // The 66 Unicode noncharacters.
+      if (codePoint >= 0xFDD0 && codePoint <= 0xFDEF) return false;
+      if ((codePoint & 0xFFFF) >= 0xFFFE) return false;
+
+      // Omit C0 controls, DELETE, and C1 controls from this copy shelf.
+      if (codePoint <= 0x1F) return false;
+      if (codePoint >= 0x7F && codePoint <= 0x9F) return false;
+
+      return true;
+    }
+
+    function getOfficialName(codePoint) {
+      if (codePoint >= 0x41 && codePoint <= 0x5A) {
+        return "LATIN CAPITAL LETTER " + String.fromCodePoint(codePoint);
+      }
+
+      if (codePoint >= 0x61 && codePoint <= 0x7A) {
+        return "LATIN SMALL LETTER " +
+          String.fromCodePoint(codePoint).toUpperCase();
+      }
+
+      if (codePoint >= 0x30 && codePoint <= 0x39) {
+        return "DIGIT " + DIGIT_NAMES[codePoint - 0x30];
+      }
+
+      return OFFICIAL_NAMES.get(codePoint) || null;
+    }
+
+    function getPreviewLabel(codePoint) {
+      if (
+        codePoint === 0x20 ||
+        codePoint === 0xA0 ||
+        (codePoint >= 0x2000 && codePoint <= 0x200A) ||
+        codePoint === 0x202F ||
+        codePoint === 0x205F
+      ) {
+        return "Whitespace";
+      }
+
+      if (codePoint === 0xAD) return "Soft hyphen";
+      if (codePoint === 0x2028) return "Line separator";
+      if (codePoint === 0x2029) return "Paragraph separator";
+
+      if (
+        (codePoint >= 0x200B && codePoint <= 0x200F) ||
+        (codePoint >= 0x202A && codePoint <= 0x202E) ||
+        (codePoint >= 0x2060 && codePoint <= 0x2064) ||
+        (codePoint >= 0x2066 && codePoint <= 0x206F)
+      ) {
+        return "Invisible formatting character";
+      }
+
+      return "";
+    }
+
+    function buildDataset() {
+      const records = [];
+      const seen = new Set();
+
+      UNICODE_BLOCKS.forEach((block, blockIndex) => {
+        if (
+          !Number.isInteger(block.start) ||
+          !Number.isInteger(block.end) ||
+          block.start < 0 ||
+          block.end > 0x10FFFF ||
+          block.start > block.end
+        ) {
+          throw new Error("Invalid Unicode block range: " + block.name);
+        }
+
+        for (let codePoint = block.start; codePoint <= block.end; codePoint++) {
+          if (!isIncludedCodePoint(codePoint) || seen.has(codePoint)) continue;
+          seen.add(codePoint);
+
+          const officialName = getOfficialName(codePoint);
+          const name = officialName || FALLBACK_NAME;
+
+          records.push({
+            codePoint,
+            character: String.fromCodePoint(codePoint),
+            code: formatCodePoint(codePoint),
+            name,
+            blockIndex,
+            blockName: block.name,
+            searchText: (block.name + " " + name).toLowerCase()
+          });
+        }
+      });
+
+      return records;
+    }
+
+    const allCharacters = buildDataset();
+    const recordsByCodePoint = new Map(
+      allCharacters.map(record => [record.codePoint, record])
+    );
+
+    let filteredCharacters = allCharacters;
+    let renderedCount = 0;
+
+    // Populate the block dropdown using safe DOM text assignments.
+    UNICODE_BLOCKS.forEach((block, index) => {
+      const option = document.createElement("option");
+      option.value = String(index);
+      option.textContent = block.name;
+      blockFilter.append(option);
+    });
+
+    function createCard(record) {
+      const card = document.createElement("li");
+      card.className = "card";
+
+      const glyph = document.createElement("bdi");
+      glyph.className = "glyph";
+      glyph.setAttribute("aria-hidden", "true");
+      glyph.dir = "ltr";
+
+      const previewLabel = getPreviewLabel(record.codePoint);
+      if (previewLabel) {
+        glyph.textContent = previewLabel;
+        glyph.classList.add("placeholder");
+        glyph.title = "Copy copies the actual character, not this preview.";
+      } else {
+        glyph.textContent = record.character;
+      }
+
+      const code = document.createElement("code");
+      code.className = "code-point";
+      code.textContent = record.code;
+
+      const name = document.createElement("div");
+      name.className = "character-name";
+      name.textContent = record.name;
+
+      const block = document.createElement("p");
+      block.className = "block-name";
+      block.textContent = record.blockName;
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "copy-button";
+      button.dataset.codePoint = String(record.codePoint);
+      button.textContent = "Copy";
+      button.setAttribute(
+        "aria-label",
+        "Copy " + record.code + ": " + record.name
+      );
+
+      card.append(glyph, code, name, block, button);
+      return card;
+    }
+
+    function updateResultSummary() {
+      const total = filteredCharacters.length;
+      resultCount.textContent =
+        "Showing " + numberFormatter.format(renderedCount) +
+        " of " + numberFormatter.format(total) +
+        " matching characters";
+
+      emptyMessage.hidden = total !== 0;
+      loadMoreButton.hidden = renderedCount >= total;
+
+      const nextCount = Math.min(PAGE_SIZE, total - renderedCount);
+      loadMoreButton.textContent = "Load more (" + nextCount + ")";
+    }
+
+    function renderNextPage(moveFocus = false) {
+      const end = Math.min(
+        renderedCount + PAGE_SIZE,
+        filteredCharacters.length
+      );
+      const fragment = document.createDocumentFragment();
+      let firstNewButton = null;
+
+      for (let index = renderedCount; index < end; index++) {
+        const card = createCard(filteredCharacters[index]);
+        if (!firstNewButton) {
+          firstNewButton = card.querySelector(".copy-button");
+        }
+        fragment.append(card);
+      }
+
+      list.append(fragment);
+      renderedCount = end;
+      updateResultSummary();
+
+      // Keep keyboard navigation at the newly appended content, including
+      // when the Load more button disappears after the final batch.
+      if (moveFocus && firstNewButton) {
+        firstNewButton.focus();
+      }
+    }
+
+    function applyFilters() {
+      const rawQuery = searchInput.value;
+      const query = rawQuery === " " ? " " : rawQuery.trim();
+      const lowerQuery = query.toLowerCase();
+      const selectedBlock = blockFilter.value;
+
+      // A lone character is treated literally. Bare hexadecimal searches use
+      // 2–6 digits; U+ and 0x prefixes allow 1–6 digits.
+      let requestedCodePoint = null;
+      const prefixed = query.match(/^(?:U\+|0x)([0-9a-f]{1,6})$/i);
+      const bare = query.match(/^[0-9a-f]{2,6}$/i);
+
+      if (prefixed) {
+        requestedCodePoint = Number.parseInt(prefixed[1], 16);
+      } else if (bare) {
+        requestedCodePoint = Number.parseInt(query, 16);
+      }
+
+      filteredCharacters = allCharacters.filter(record => {
+        if (
+          selectedBlock !== "" &&
+          record.blockIndex !== Number(selectedBlock)
+        ) {
+          return false;
+        }
+
+        if (!query) return true;
+
+        if (requestedCodePoint !== null) {
+          return record.codePoint === requestedCodePoint;
+        }
+
+        // Character matching is exact, so supplementary-plane emoji remain
+        // intact and are never split into UTF-16 code units.
+        return record.character === query ||
+          record.searchText.includes(lowerQuery);
+      });
+
+      renderedCount = 0;
+      list.replaceChildren();
+      renderNextPage();
+    }
+
+    function announceCopy(message, state) {
+      window.clearTimeout(announcementTimer);
+      copyFeedback.dataset.state = state;
+
+      // Clear first so repeating the same copy action can be announced again.
+      copyFeedback.textContent = "";
+      announcementTimer = window.setTimeout(() => {
+        copyFeedback.textContent = message;
+      }, 40);
+    }
+
+    function legacyCopy(text) {
+      const activeElement = document.activeElement;
+      const selection = window.getSelection();
+      const savedRanges = [];
+
+      if (selection) {
+        for (let index = 0; index < selection.rangeCount; index++) {
+          savedRanges.push(selection.getRangeAt(index).cloneRange());
+        }
+      }
+
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.readOnly = true;
+      textarea.tabIndex = -1;
+      textarea.setAttribute("aria-label", "Temporary clipboard text");
+
+      // It must remain selectable; display:none prevents legacy copying.
+      Object.assign(textarea.style, {
+        position: "fixed",
+        top: "0",
+        left: "0",
+        width: "1px",
+        height: "1px",
+        padding: "0",
+        border: "0",
+        opacity: "0",
+        fontSize: "16px",
+        pointerEvents: "none"
+      });
+
+      document.body.append(textarea);
+
+      try {
+        textarea.focus({ preventScroll: true });
+        textarea.select();
+        textarea.setSelectionRange(0, textarea.value.length);
+
+        if (!document.execCommand("copy")) {
+          throw new Error("The browser rejected the legacy copy operation.");
+        }
+      } finally {
+        textarea.remove();
+
+        if (activeElement instanceof HTMLElement && activeElement.isConnected) {
+          activeElement.focus({ preventScroll: true });
+        }
+
+        if (selection) {
+          selection.removeAllRanges();
+          savedRanges.forEach(range => {
+            if (range.commonAncestorContainer.isConnected) {
+              selection.addRange(range);
+            }
+          });
+        }
+      }
+    }
+
+    async function copyText(text) {
+      // Some browsers expose the API but reject access (permissions, file://,
+      // embedding policies, or an insecure context). Try the fallback then.
+      try {
+        if (navigator.clipboard &&
+            typeof navigator.clipboard.writeText === "function") {
+          await navigator.clipboard.writeText(text);
+          return;
+        }
+      } catch {
+        // Continue to the synchronous, deprecated-but-useful fallback.
+      }
+
+      legacyCopy(text);
+    }
+
+    function showButtonFeedback(button, record, success) {
+      button.dataset.state = success ? "success" : "error";
+      button.textContent = success ? "Copied!" : "Try again";
+      button.setAttribute(
+        "aria-label",
+        (success ? "Copied " : "Copy failed. Retry copying ") +
+        record.code + ": " + record.name
+      );
+
+      const timer = window.setTimeout(() => {
+        button.textContent = "Copy";
+        delete button.dataset.state;
+        button.setAttribute(
+          "aria-label",
+          "Copy " + record.code + ": " + record.name
+        );
+        buttonTimers.delete(button);
+      }, 2000);
+
+      buttonTimers.set(button, timer);
+    }
+
+    // One delegated handler services all current and future Copy buttons.
+    list.addEventListener("click", async event => {
+      if (!(event.target instanceof Element)) return;
+
+      const button = event.target.closest("button[data-code-point]");
+      if (!button || !list.contains(button) || button.dataset.busy === "true") {
+        return;
+      }
+
+      const record = recordsByCodePoint.get(Number(button.dataset.codePoint));
+      if (!record) return;
+
+      window.clearTimeout(buttonTimers.get(button));
+      button.dataset.busy = "true";
+      button.setAttribute("aria-busy", "true");
+      button.textContent = "Copying…";
+      delete button.dataset.state;
+
+      let success = false;
+
+      try {
+        await copyText(record.character);
+        success = true;
+        announceCopy(
+          "Copied " + record.code + ": " + record.name + ".",
+          "success"
+        );
+      } catch {
+        announceCopy(
+          "Could not copy " + record.code +
+          ". Check your browser’s clipboard permissions, or select a visible " +
+          "glyph and copy it manually.",
+          "error"
+        );
+      } finally {
+        delete button.dataset.busy;
+        button.removeAttribute("aria-busy");
+
+        // A search may have replaced this card while copying was pending.
+        if (button.isConnected) {
+          showButtonFeedback(button, record, success);
+        }
+      }
+    });
+
+    // This curated dataset is small enough to filter immediately on input;
+    // only one batch is mounted after a search or category change.
+    searchInput.addEventListener("input", applyFilters);
+    blockFilter.addEventListener("change", applyFilters);
+
+    resetButton.addEventListener("click", () => {
+      searchInput.value = "";
+      blockFilter.value = "";
+      applyFilters();
+      searchInput.focus();
+    });
+
+    loadMoreButton.addEventListener("click", () => {
+      renderNextPage(true);
+    });
+
+    applyFilters();
+  </script>
+</body>
+</html>
+
+							<script>
+                            	
+							</script>
+                        </body>
+                        </html>
+                    
